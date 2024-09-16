@@ -66,7 +66,7 @@ pipeline{
         stage('Docker_build') {
             steps {
                 script {
-                    dockerImage = docker.build( imageurl + ":${BUILD_NUMBER}", "Dockerfile")
+                    dockerImage = docker.build( imageurl + ":${BUILD_NUMBER}", ".")
                 }
             }
         }
