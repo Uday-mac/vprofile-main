@@ -1,4 +1,4 @@
-FROM openjdk:8 AS BUILD_IMAGE
+FROM openjdk:11 AS BUILD_IMAGE
 RUN apt-get update && apt-get install maven -y
 RUN git clone -b docker-ecr https://github.com/Uday-mac/vprofile-main.git
 RUN cd vprofile-main && mvn install
