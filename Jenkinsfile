@@ -75,7 +75,7 @@ pipeline{
             steps {
                 script {
                     docker.withRegistry( appurl, registry_credentials)
-                    docker.push("${BUILD_NUMBER}:latest")
+                    dockerImage.push("${BUILD_NUMBER}:latest")
                 }
             }
         }
