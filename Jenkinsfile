@@ -74,8 +74,10 @@ pipeline{
         stage('Upload to ecr') {
             steps {
                 script {
-                    docker.withRegistry( appurl, registry_credentials)
-                    dockerImage.push("${BUILD_NUMBER}:latest")
+                    docker.withRegistry( appurl, registry_credentials) {
+                        dockerImage.push("${BUILD_NUMBER}:latest")
+                    }
+                    
                 }
             }
         }
