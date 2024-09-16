@@ -74,7 +74,7 @@ pipeline{
         stage('Upload to ecr') {
             steps {
                 script {
-                    docker.withRegistry( appurl, registry_credentials) {
+                    docker.withRegistry('https://654654443485.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws_creds') {
                         dockerImage.push("${BUILD_NUMBER}:latest")
                     }
                     
