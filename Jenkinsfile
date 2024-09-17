@@ -8,6 +8,8 @@ pipeline{
         registry_credentials = 'ecr:us-east-1:aws_creds'
         appurl = "https://654654443485.dkr.ecr.us-east-1.amazonaws.com"
         imageurl = "654654443485.dkr.ecr.us-east-1.amazonaws.com/vprofileapp"
+        cluster_name = 'vproapp'
+        service_name = 'vproappsvc'
     }
     stages {
         stage('Cloning the code') {
@@ -79,6 +81,14 @@ pipeline{
                         dockerImage.push("latest")
                     }
                     
+                }
+            }
+        }
+
+        stage(deploy_on_ecs) {
+            steps {
+                withAWS(credentials: 'awscreds', region: 'us-east-1') {
+                sh 'aws ecs update-service --cluster {cluster_name} --service {service_name} --force-new-deployment'
                 }
             }
         }

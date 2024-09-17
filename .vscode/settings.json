@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/galaxy.json": "file:///f%3A/vprofile-project/task.yml"
+    },
+    "ansible.python.interpreterPath": "c:\\Users\\UDAY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+}
