@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage {
+        stage('build_code') {
             steps {
                 echo "Build success"
             }
