@@ -1,0 +1,25 @@
+Job url
+JENKINS_URL/job/build_job/build?token=TOKEN_NAME
+
+http://18.232.175.80:8080/job/build_job/build?token=Mybuildtoken
+
+Token 
+admin:tokenid
+
+admin:11fa17e238daf457315e91d4ecdc9acb72
+crumb 
+
+wget -q --auth-no-challenge --user username --password password --output-document -
+'http://JENNKINS_IP:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+
+wget -q --auth-no-challenge --user admin --password admin --output-document - 'http://18.232.175.80:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+
+Jenkins crumb 
+
+Jenkins-Crumb:5e5cd864e93a473314879099aa982428ea76fea6ad15fc3e0d360f724561d556
+
+
+curl -I -X POST http://username:APItoken @Jenkins_IP:8080/job/JOB_NAME/build?token=TOKENNAME
+-H "Jenkins-Crumb:CRUMB"
+
+curl -I -X POST http://admin:11fa17e238daf457315e91d4ecdc9acb72@18.232.175.80:8080/job/JOB_NAME/build?token=Mybuildtoken -H "Jenkins-Crumb:5e5cd864e93a473314879099aa982428ea76fea6ad15fc3e0d360f724561d556"
