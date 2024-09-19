@@ -43,8 +43,6 @@
         vpc_subnet_id: "{{pubsub1_id}}"
         instance_type: t2.micro
         security_group: "{{sgout.group_id}}"
-        network_interfaces:
-          - assign_public_ip: true
         image_id: "{{bastionami}}"
         exact_count: 1
         tags:
