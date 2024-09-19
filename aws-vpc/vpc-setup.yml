@@ -31,3 +31,63 @@
         tags:
           Name: pubsub1
       register: pubsub1_out
+    
+    - name: Create public subnet 2 in zone2
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pub_sub2}}"
+        az: "{{zone2}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pubsub2
+      register: pubsub2_out
+
+    - name: Create public subnet 3 in zone3
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pub_sub3}}"
+        az: "{{zone3}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pubsub3
+      register: pubsub3_out
+
+    - name: Create private subnet 1 in zone1
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pir_sub1}}"
+        az: "{{zone1}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pirsub1
+      register: pirsub1_out
+    
+    - name: Create private subnet 2 in zone2
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pir_sub2}}"
+        az: "{{zone2}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pirsub2
+      register: pirsub2_out
+
+    - name: Create private subnet 3 in zone3
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pir_sub3}}"
+        az: "{{zone3}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pirsub3
+      register: pirsub3_out
