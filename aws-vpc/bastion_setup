@@ -1,0 +1,5 @@
+#bastion ami_id
+bastionami: ami-0a5c3558529277641
+region: us-east-2
+myip: 192.140.155.138/32
+

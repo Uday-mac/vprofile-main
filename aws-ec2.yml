@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: start an instance with a public IP address
+      amazon.aws.ec2_instance:
+        name: "ansible-instance"
+        key_name: "sample"
+        #vpc_subnet_id: subnet-5ca1ab1e
+        instance_type: t2.micro
+        security_group: default
+        network_interfaces:
+          - assign_public_ip: true
+        image_id: ami-0a0e5d9c7acc336f1
+        region: us-east-1
+        tags:
+          Name: ansible-instance

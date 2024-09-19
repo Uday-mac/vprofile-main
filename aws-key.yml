@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: creating the key
+      ec2_key:
+        name: sample
+      register: keyout
+
+    - name: printing the key
+      debug:
+        var: keyout
+
+    - name: storing the key
+      copy:
+        content: "{{keyout.key.private_key}}"
+        dest: ./sample-key.pem
+
+      

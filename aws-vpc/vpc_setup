@@ -1,0 +1,23 @@
+#vpc name
+vpc_name: vprofile-vpc
+
+#region
+region: us-east-1
+
+#cidr block
+vpc_cidr: 172.20.0.0/16
+
+#subnets
+pub_sub1: 172.20.1.0/32
+pub_sub2: 172.20.2.0/32
+pub_sub3: 172.20.3.0/32
+pir_sub1: 172.20.4.0/32
+pir_sub1: 172.20.5.0/32
+pir_sub1: 172.20.6.0/32
+
+#availability-zones
+zone1: us-east-1a
+zone2: us-east-1b
+zone2: us-east-1c
+
+state: present

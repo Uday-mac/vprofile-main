@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: creating the key
+      amazon.aws.ec2_key:
+        name: ansible-key
+        region: us-east-1
+      register: keyout
+
+    - name: saving the key
+      copy:
+        content: "{{keyout.key.private_key}}"
+        dest: ./ansible-key
+      when: keyout.changed == 'true'
+
