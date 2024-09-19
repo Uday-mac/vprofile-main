@@ -43,7 +43,7 @@
         region: "{{region}}"
         instance_type: t2.micro
         image_id: "{{bastionami}}"
-        exact_count: 1
+        count: 1
         wait: yes
         wait_timeout: 300
         vpc_subnet_id: "{{pubsub1_id}}"
