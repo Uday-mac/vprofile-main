@@ -48,8 +48,7 @@
         exact_count: 1
         wait: yes
         wait_timeout: 300
-        tags:
-          Name: bastion-instance
+      register: batsion_out
 
     
     
