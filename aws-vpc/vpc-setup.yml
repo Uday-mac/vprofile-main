@@ -144,14 +144,32 @@
       debug:
        var: "{{item}}"
       loop:
-       - vpc_id: "{{vpcout.vpc.id}}"
-       - pubsub1_id: "{{ pubsub1_out.subnet.id }}"
-       - pubsub2_id: "{{ pubsub2_out.subnet.id }}"
-       - pubsub3_id: "{{ pubsub3_out.subnet.id }}"
-       - pirsub1_id: "{{ pirsub1_out.subnet.id }}"
-       - pirsub2_id: "{{ pirsub2_out.subnet.id }}"
-       - pirsub3_id: "{{ pirsub3_out.subnet.id }}"
-       - igw_id: "{{ igwout.gateway_id }}"
-       - pubRT_id: "{{pubRT_out.route_table.id}}"
-       - natgw_id: "{{natgw_out.nat_gateway_id}}"
-       - pirRT_id: "{{pirRT_out.route_table.id}}"
+       - vpcout.vpc.id
+       - pubsub1_out.subnet.id
+       - pubsub2_out.subnet.id
+       - pubsub3_out.subnet.id
+       - pirsub1_out.subnet.id
+       - pirsub2_out.subnet.id
+       - pirsub3_out.subnet.id
+       - igwout.gateway_id
+       - pubRT_out.route_table.id
+       - natgw_out.nat_gateway_id
+       - pirRT_out.route_table.id
+    
+    - set-fact:
+        vpc_id: "{{vpcout.vpc.id}}"
+        pubsub1_id: "{{ pubsub1_out.subnet.id }}"
+        pubsub2_id: "{{ pubsub2_out.subnet.id }}"
+        pubsub3_id: "{{ pubsub3_out.subnet.id }}"
+        pirsub1_id: "{{ pirsub1_out.subnet.id }}"
+        pirsub2_id: "{{ pirsub2_out.subnet.id }}"
+        pirsub3_id: "{{ pirsub3_out.subnet.id }}"
+        igw_id: "{{ igwout.gateway_id }}"
+        pubRT_id: "{{pubRT_out.route_table.id}}"
+        natgw_id: "{{natgw_out.nat_gateway_id}}"
+        pirRT_id: "{{pirRT_out.route_table.id}}"
+        cacheable: yes
+       
+    - name: copying the ids to a file
+      copy:
+        content: "vpc_id: {{vpcout.vpc.id}}\npubsub1_id: {{ pubsub1_out.subnet.id }}\npubsub2_id: {{ pubsub2_out.subnet.id }}\npubsub3_id: {{ pubsub3_out.subnet.id }}\npirsub1_id: {{ pirsub1_out.subnet.id }}\npirsub2_id: {{ pirsub2_out.subnet.id }}\npirsub3_id: {{ pirsub3_out.subnet.id }}\nigw_id: {{ igwout.gateway_id }}\npubRT_id: {{pubRT_out.route_table.id}}\nnatgw_id: {{natgw_out.nat_gateway_id}}\npirRT_id: {{pirRT_out.route_table.id}}"
