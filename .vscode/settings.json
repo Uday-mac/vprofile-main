@@ -3,7 +3,8 @@
         "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": [
             "file:///f%3A/vprofile-main/aws-key.yml",
             "file:///f%3A/vprofile-main/aws-ec2.yml",
-            "file:///f%3A/vprofile-main/aws-vpc/aws-ec2.yml"
+            "file:///f%3A/vprofile-main/aws-vpc/aws-ec2.yml",
+            "file:///f%3A/vprofile-main/aws-vpc/vpc-setup.yml"
         ]
     },
     "ansible.python.interpreterPath": "c:\\Users\\UDAY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
