@@ -121,7 +121,7 @@
         state: "{{state}}"
         subnet_id: "{{ pubsub1_out.subnet.id }}"
         wait: true
-        region: ap-southeast-2
+        region: "{{region}}"
         if_exist_do_not_create: true
       register: natgw_out
 
