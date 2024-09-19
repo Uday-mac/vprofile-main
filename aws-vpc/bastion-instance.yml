@@ -1,0 +1,54 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: import bastion variables
+      inclusde_vars: bastion_setup
+
+    - name: importing vpc ids
+      include_vars: vars/output_vars
+
+    - name: creating ket for bastion hosts
+      amazon.aws.ec2_key:
+        name: bastion-key
+        region: "{{region}}"
+      register: keyout
+
+    - name: saving the key
+      copy:
+       content: "{{keyout.key.private_key}}"
+       dest: ./bastion-key.pem
+      when: keyout.changed == true
+
+    - name: security-group for bastion-host
+      amazon.aws.ec2_security_group:
+        name: bastion-instance
+        description: bastion_host-sg
+        vpc_id: "{{vpc_id}}"
+        region: "{{region}}"
+        rules:
+          - proto: tcp
+            ports:
+              - 22
+            cidr_ip: "{{myip}}"
+            rule_desc: allow ssh on port 22 from myip
+      register: sgout
+
+    - name: creating bastion instace
+      amazon.aws.ec2_instance:
+        name: bastion-instance
+        key_name: bastion-key
+        vpc_subnet_id: "{{pubsub1_id}}"
+        instance_type: t2.micro
+        security_group: "{{sgout.group_id}}"
+        network_interfaces:
+          - assign_public_ip: true
+        image_id: "{{bastionami}}"
+        exact_count: 1
+        tags:
+          Name: bastion-instance
+
+    
+    
