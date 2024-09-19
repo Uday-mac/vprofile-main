@@ -1,0 +1,25 @@
+---
+- name: creating the ec2-user
+  hosts: all
+  become: true
+
+  tasks:
+    - name: user creation
+      ansible.builtin.user:
+        name: "{{user}}"
+        comment: "{{comment}}"
+      register: userout
+
+    - name: printinhg the output of the tasks
+      debug:
+        var: userout
+
+    - name: printing the name variables
+      debug:
+        var: userout.name
+
+    - name: printing the comment variables
+      debug:
+        var: userout.comment
+
+    

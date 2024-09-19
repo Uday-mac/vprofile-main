@@ -1,0 +1,36 @@
+---
+- name: db_server_setup
+  hosts: dbservers
+  become: true
+
+  tasks:
+    - name: installing the mariadb_server
+      yum:
+        name: mariadb-server
+        state: present
+
+    - name: installing the pymysql
+      yum:
+        name: python3-PyMySQL 
+        state: present
+
+    - name: starting the mariadb-server
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Create a new database with name 'accounts'
+      mysql_db:
+        name: accounts
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock
+
+
+    - name: Create database user with name 'vprofile'
+      mysql_user:
+        name: vprofile
+        password: 12345
+        priv: '*.*:ALL'
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock
