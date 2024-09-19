@@ -40,6 +40,7 @@
       amazon.aws.ec2_instance:
         name: bastion-instance
         key_name: bastion-key
+        region: "{{region}}"
         vpc_subnet_id: "{{pubsub1_id}}"
         instance_type: t2.micro
         security_group: "{{sgout.group_id}}"
