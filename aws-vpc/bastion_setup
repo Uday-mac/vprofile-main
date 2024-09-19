@@ -1,5 +1,5 @@
 #bastion ami_id
-bastionami: ami-0ebfd941bbafe70c6
+bastionami: ami-0e86e20dae9224db8
 region: us-east-1
 myip: 192.140.155.138/32
 
