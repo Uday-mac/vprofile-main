@@ -1,0 +1,28 @@
+---
+- name: installing package with loop
+  hosts: all
+  become: true
+
+  tasks:
+    - name: installing packages on centos
+      yum:
+        name: "{{item}}"
+        state: present
+      when: ansible_distribution == "Centos"
+      loop: 
+        - ntp
+        - wget
+        - httpd
+
+    - name: installing packages on centos
+      apt:
+        name: "{{item}}"
+        update_cache: yes
+        state: present
+      when: ansible_distribution == "Ubuntu"
+      loop: 
+        - ntp
+        - wget
+        - httpd
+
+     

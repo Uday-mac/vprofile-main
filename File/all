@@ -1,0 +1,4 @@
+ntp0: server 0.north-america.pool.ntp.org
+ntp1: server 1.north-america.pool.ntp.org
+ntp2: server 2.north-america.pool.ntp.org
+ntp3: server 3.north-america.pool.ntp.org

@@ -1,0 +1,57 @@
+---
+- name: file module excerise
+  hosts: all
+  become: true
+
+  tasks:
+    - name: installing the ntp
+      yum:
+        name: chrony
+        update_cache: yes
+        state: present
+      when: ansible_distribution == "CentOS"
+
+    - name: installing the ntp
+      apt:
+        name: ntp
+        update_cache: yes
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: starting the service
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: starting the service
+      service:
+        name: ntp
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: copying the conf file
+      template:
+        src: ntp_centos
+        dest: /etc/chrony.conf
+      when: ansible_distribution == "CentOS"
+
+    - name: copying the conf file
+      template:
+        src: ntp_ubuntu
+        dest: /etc/ntpsec/ntp.conf
+      when: ansible_distribution == "Ubuntu"
+
+    - name: restarting the service
+      service:
+        name: chronyd
+        state: restarted
+      when: ansible_distribution == "CentOS"
+
+    - name: restarting the service
+      service:
+        name: ntp
+        state: restarted
+      when: ansible_distribution == "Ubuntu"

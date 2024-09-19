@@ -4,7 +4,10 @@
         "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": [
             "file:///f%3A/vprofile-project/vars_exercise.yml",
             "file:///f%3A/vprofile-project/exercise1.yml",
-            "file:///f%3A/vprofile-project/vars.yml"
+            "file:///f%3A/vprofile-project/vars.yml",
+            "file:///f%3A/vprofile-project/Decision_making/provisioning.yml",
+            "file:///f%3A/vprofile-project/loops/loop.yml",
+            "file:///f%3A/vprofile-project/File/copy.yml"
         ]
     }
 }
