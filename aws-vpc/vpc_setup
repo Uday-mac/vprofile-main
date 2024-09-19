@@ -18,6 +18,6 @@ pir_sub1: 172.20.6.0/32
 #availability-zones
 zone1: us-east-1a
 zone2: us-east-1b
-zone2: us-east-1c
+zone3: us-east-1c
 
 state: present
