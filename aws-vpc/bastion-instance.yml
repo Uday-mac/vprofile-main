@@ -46,6 +46,8 @@
         security_group: "{{sgout.group_id}}"
         image_id: "{{bastionami}}"
         exact_count: 1
+        wait: yes
+        wait_timeout: 300
         tags:
           Name: bastion-instance
 
