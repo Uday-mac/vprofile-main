@@ -19,3 +19,15 @@
         tags:
           Name: "{{vpc_name}}"
       register: vpcout
+    
+    - name: Create public subnet 1 in zone1
+      amazon.aws.ec2_vpc_subnet:
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{pub_sub1}}"
+        az: "{{zone1}}"
+        region: "{{region}}"
+        map_public: true
+        state: "{{state}}"
+        tags:
+          Name: pubsub1
+      register: pubsub1_out
