@@ -115,7 +115,7 @@
         security_group: "{{vpro_sg_out.group_id}}"
         tags:
           Name: db01
-      register: db0101_out
+      register: db01_out
 
     - name: creating memcached instance
       amazon.aws.ec2_instance:
