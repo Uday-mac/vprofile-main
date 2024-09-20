@@ -1,0 +1,11 @@
+vpc_id: vpc-0b6e01d70d0080bcd
+pubsub1_id: subnet-0f75a4fdfffda91b1
+pubsub2_id: subnet-0347e7f9efff35474
+pubsub3_id: subnet-0454fcc2a900948e9
+pirsub1_id: subnet-043a115168484a1d0
+pirsub2_id: subnet-08debcc9f4ec175e9
+pirsub3_id: subnet-01044db2d4ff1176a
+igw_id: igw-096c6aebe8c4f9732
+pubRT_id: rtb-0a03a37eb015d827e
+natgw_id: nat-006456fdd4394d758
+pirRT_id: rtb-089f5f8f003d6b322
