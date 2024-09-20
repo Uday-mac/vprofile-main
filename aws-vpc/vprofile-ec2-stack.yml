@@ -24,7 +24,7 @@
       copy:
        content: "{{loginkeyout.key.private_key}}"
        dest: ./login-key.pem
-      when: loginkeyout.change == true
+      when: loginkeyout.changed == true
 
     
         
