@@ -12,7 +12,6 @@
         name: "{{vpc_name}}"
         cidr_block: "{{vpc_cidr}}"
         region: "{{region}}"
-        tenancy: dedicated
         dns_support: true
         dns_hostnames: true
         state: "{{state}}"
@@ -62,7 +61,6 @@
         cidr: "{{pir_sub1}}"
         az: "{{zone1}}"
         region: "{{region}}"
-        map_public: true
         state: "{{state}}"
         tags:
           Name: pirsub1
@@ -74,7 +72,6 @@
         cidr: "{{pir_sub2}}"
         az: "{{zone2}}"
         region: "{{region}}"
-        map_public: true
         state: "{{state}}"
         tags:
           Name: pirsub2
@@ -86,7 +83,6 @@
         cidr: "{{pir_sub3}}"
         az: "{{zone3}}"
         region: "{{region}}"
-        map_public: true
         state: "{{state}}"
         tags:
           Name: pirsub3

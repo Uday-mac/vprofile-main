@@ -40,13 +40,14 @@
       amazon.aws.ec2_instance:
         name: "bastion-instance"
         key_name: "bastion-key"
-        vpc_subnet_id: "{{pubsub1_id}}"
         instance_type: t2.micro
-        security_group: "{{sgout.group_id}}"
         image_id: "{{bastion_ami}}"
         region: "{{region}}"
+        exact_count: 1
         wait: yes
         wait_timeout: 300
+        vpc_subnet_id: "{{pubsub1_id}}"
+        security_group: "{{sgout.group_id}}"
         tags:
           Name: bastion-instance
 
