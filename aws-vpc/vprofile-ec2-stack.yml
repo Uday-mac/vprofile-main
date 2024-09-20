@@ -157,6 +157,7 @@
         module: ec2_elb_lb
         name: "vprofile-elb"
         state: present
+        region: "{{region}}"
         instance_ids:
           - "{{web01_out.instances[0].instance_id}}"
         security_group_ids: "{{elb_out.group_id}}"
