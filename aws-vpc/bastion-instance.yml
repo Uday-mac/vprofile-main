@@ -37,25 +37,19 @@
             rule_desc: allow ssh on port 22 from myip
       register: sgout
 
-    - name: creating bastion bastion-instance
-      ec2:
+    - name: start an instance with a public IP address
+      amazon.aws.ec2_instance:
+        name: "bastion-instance"
         key_name: "bastion-key"
+        vpc_subnet_id: "{{pubsub1_id}}"
         instance_type: t2.micro
-        image_id: "{{bastion_ami}}"
+        security_group: "{{sgout.group_id}}"
+        image_id: "{{bstion_ami}}"
+        region: "{{region}}"
         wait: yes
         wait_timeout: 300
-        instance_tags:
-          Name: "Bastion_Host"
-          Project: vprofile
-          Owner: Devops
-        exact_count: 1
-        coount_tag:
-          Name: "Bastion-Host"
-          Project: vprofile
-          Owner: Devops
-        group_id: "{{sgout.group_id}}"
-        vpc_subnet_id: "{{pubsub1_id}}"
-      register: bastion_out
+        tags:
+          Name: bastion-instance
 
 
     
