@@ -158,7 +158,7 @@
         name: "vprofile-elb"
         state: present
         instance_ids:
-          - "{{web01_out.instances.instance_id}}"
+          - "{{web01_out.instances[0].id}}"
         security_group_ids: "{{elb_out.group_id}}"
         purge_instance_ids: true
         subnets:
