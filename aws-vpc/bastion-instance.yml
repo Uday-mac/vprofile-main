@@ -44,7 +44,7 @@
         vpc_subnet_id: "{{pubsub1_id}}"
         instance_type: t2.micro
         security_group: "{{sgout.group_id}}"
-        image_id: "{{bstion_ami}}"
+        image_id: "{{bastion_ami}}"
         region: "{{region}}"
         wait: yes
         wait_timeout: 300
