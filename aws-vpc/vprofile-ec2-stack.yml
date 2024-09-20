@@ -183,7 +183,7 @@
 
     - name: saving the login-key
       copy:
-       content: "{{loginkeyout.key.private_key}}"
+       src: login-key.pem
        dest: provision-stack/loginkey_vpro.pem
        mode: 0400
 
