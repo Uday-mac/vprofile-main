@@ -37,8 +37,7 @@
             rule_desc: allow ssh on port 22 from myip
       register: sgout
 
-    - name: creating bastion instance
-      ec2:
+    - ec2:
         key_name: bastion-key
         instance_type: t2.micro
         image: "{{bastion_ami}}"
