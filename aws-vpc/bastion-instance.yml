@@ -38,7 +38,7 @@
       register: sgout
 
     - name: creating bastion instance
-      ec2_instance:
+      ec2:
         key_name: bastion-key
         instance_type: t2.micro
         image: "{{bastion_ami}}"
