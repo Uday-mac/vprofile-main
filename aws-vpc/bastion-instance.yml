@@ -36,7 +36,7 @@
             cidr_ip: "{{myip}}"
       register: sgout
 
-    - name: start an instance with a public IP address
+    - name: creating bastion instance
       amazon.aws.ec2_instance:
         name: "bastion-instance"
         key_name: "bastion-key"
