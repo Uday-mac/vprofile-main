@@ -37,24 +37,25 @@
             rule_desc: allow ssh on port 22 from myip
       register: sgout
 
-    - ec2:
-        key_name: bastion-key
+    - name: creating bastion bastion-instance
+      ec2:
+        key_name: "bastion-key"
         instance_type: t2.micro
-        image: "{{bastion_ami}}"
+        image_id: "{{bastion_ami}}"
         wait: yes
         wait_timeout: 300
         instance_tags:
           Name: "Bastion_Host"
           Project: vprofile
-          Owner: Devops_team
+          Owner: Devops
         exact_count: 1
-        count_tag: 
-          Name: "Bastion_Host"
+        coount_tag:
+          Name: "Bastion-Host"
           Project: vprofile
-          Owner: Devops_team
-        vpc_subnet_id: "{{vpc_id}}"
+          Owner: Devops
         group_id: "{{sgout.group_id}}"
-      register: batsion_out
+        vpc_subnet_id: "{{pubsub1_id}}"
+      register: bastion_out
 
 
     
