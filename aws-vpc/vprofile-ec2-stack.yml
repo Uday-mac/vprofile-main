@@ -26,5 +26,45 @@
        dest: ./login-key.pem
       when: loginkeyout.changed == true
 
+    - name: security-group for elb
+      amazon.aws.ec2_security_group:
+        name: vprofile-elb-sg
+        description: vprofile-elb-sg
+        vpc_id: "{{vpc_id}}"
+        region: "{{region}}"
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+      register: elb_out
+
+    - name: security-group for vprofile-stack
+      amazon.aws.ec2_security_group:
+        name: vprofile-stack-sg
+        description: vprofile-stack-sg
+        vpc_id: "{{vpc_id}}"
+        region: "{{region}}"
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            group_id: "{{elb_out.group_id}}"
+
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_id: "{{bastionsgid}}"
+      register: vpro_sg_out
+
+    - name: security-group for elb
+      amazon.aws.ec2_security_group:
+        name: vprofile-elb-sg
+        description: vprofile-elb-sg
+        vpc_id: "{{vpc_id}}"
+        region: "{{region}}"
+        rules:
+          - proto: all
+            group_id: "{{vpro_sg_out.group_id}}"
     
         
