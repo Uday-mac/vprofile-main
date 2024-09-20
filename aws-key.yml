@@ -7,11 +7,8 @@
     - name: creating the key
       ec2_key:
         name: sample
+        region: us-east-1
       register: keyout
-
-    - name: printing the key
-      debug:
-        var: keyout
 
     - name: storing the key
       copy:
