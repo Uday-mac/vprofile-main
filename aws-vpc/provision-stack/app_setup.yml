@@ -1,0 +1,150 @@
+---
+- name: Common tool setup on all the servers
+  hosts: appservers
+  become: yes
+  vars:
+    timestamp: "{{ansible_date_time_date}}_{{ansible_date_time_hour}}_{{ansible_date_time_minute}}"
+    url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.95/bin/apache-tomcat-9.0.95.tar.gz
+  tasks:
+    - name: installing the jdk
+      apt: 
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
+    
+    - name: download tomcat
+      get_url:
+        src: "{{url}}"
+        dest: /tmp/apache-tomcat-9.0.95.tar.gz
+
+    - name: tomcat group
+      group: 
+        name: tomcat
+        state: present
+
+    - name: creating tomcat user
+      user:
+        name: tomcat
+        group: tomcat
+        shell: /bin/nologin
+        home: /usr/local/tomcat9
+
+    - name: creating temporary directory
+      file:
+        path: /tmp/tomcat9
+        state: directory
+
+    - name: Extract tomcat
+      unarchive:
+        src: /tmp/apache-tomcat-9.0.95.tar.gz
+        dest: /tmp/tomcat9
+        remote_src: yes
+        list_files: yes
+      register: unarchive_info
+
+    - debug:
+        msg: "{{unarchive_info.files[0].spilt('/')[0]}}"
+
+    - name: synchronize /tnp/tomcat9/tomcat_cont /usr/local/tomcat9
+      synchronize:
+        src: "/tmp/tomcat9/{{unarchive_info.files[0].spilt('/')[0]}}"
+        dest: /usr/local/tomcat9/
+      delegate_to: "{{inventory_hostname}}"
+
+    - name: change the ownerwship of usr/local/tomcat9
+      file:
+        path: /usr/local/tomcat9
+        owner: tomcat
+        group: tomcat
+        recurese: yes
+
+    - name: creating the systemd file
+      template: 
+        src: templates/tomcat9-ubuntu-svcfile.j2
+        dest: /etc/systemd/system/tomcat9.service
+
+    - name: restaring the daemon-reload
+      systemd:
+        daemon_reload: yes
+
+    - name: start and enabld the tomcat service
+      service:
+        name: tomcat9
+        state: started
+        enabled: yes
+
+    - stat:
+        path: /usr/local/tomcat9/webapps/ROOT
+      register: artifact_stat
+
+    - name: stopping the tomcat service
+      service:
+        name: tomcat9
+        state: stopped
+    
+    - name: Try backup and deploy
+      block:
+        - name: Archive ROOT and take the backup
+          archive:
+            path: /usr/local/tomcat9/webapps/ROOT
+            dest: "/opt/ROOT_{{timestamp}}.tgz"
+          when: artifact_stat.stat.exists
+          register: archive_info
+
+        - name: copy ROOT dir with old_ROOT name
+          shell: cp -r ROOT old_ROOT
+          args:
+            chdir: /usr/local/tomcat9/webapps/
+
+        - name: Delete the current artifact
+          file:
+            path: "{{item}}"
+            state: absent
+          when: archive_info.change
+          loop:
+            - {/usr/local/tomcat9/webapps/ROOT}
+            - {/usr/local/tomcat9/webapps/ROOT.war}
+
+        - name: try deploy artifact else restore from old_ROOT
+          block:
+            - name: copying the artifact from 
+              copy:
+                src: files/ROOT.war
+                dest: /usr/local/tomcat9/webapps/ROOT.war
+              register: deploy_info
+            
+          rescue:
+            - name: copy the old_ROOT
+              shell: cp -r old_ROOT ROOT
+              args:
+                chdir://usr/local/tomcat9/webapps/
+
+      rescue: 
+        - name: starte the service
+          service:
+            name: tomcat9
+            state: started
+            
+    - name: start the service
+      service:
+        name: tomcat9
+        state: started
+      when: deploy_info.changed
+
+    - name: wait until ROOT.war is unarchived
+      wait_for: 
+        path: /usr/local/tomcat9/webapps/ROOT
+
+    - name: Deploy the application properties
+      template:
+        src: templates/application.j2
+        dest: /usr/local/tomcat9/webapps/ROOT/WEB-INF/classes/application.properties
+        force: yes
+      notify:
+        - restart_tomcat
+
+  handlers:
+    - name: restart_tomcat
+      service: 
+        name: tomcat9
+        state: restarted

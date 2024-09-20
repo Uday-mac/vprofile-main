@@ -1,0 +1,25 @@
+---
+- name: building the artifact and deploying the sql file
+  import_playbook: build.yml
+
+- name: copy the hosts from hostip to /etc/hosts
+  import_playbook: set_host_ip.yml
+
+- name: setup dbserver
+  import_playbook: db_setup.yml
+
+- name: deploy sql file on dbserver
+  import_playbook: dbdeploy.yml
+  
+- name: setup memcache
+  import_playbook: mc_setup.yml
+
+- name: setup rabbitmq
+  import_playbook: rmq_setup.yml
+
+- name: setup tomcat
+  import_playbook: app_setup.yml
+
+- name: setup nginx
+  import_playbook: web_setup.yml
+

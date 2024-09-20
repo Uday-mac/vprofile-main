@@ -1,0 +1,20 @@
+---
+- name: setting the host ip to ip in the /etc/hosts/ in all servers
+  host: all
+  become: true
+
+  tasks:
+    - name: importing the host vars
+      include_vars: group_vars/hostsip
+
+    - name: updating the host ip in the /etc/hosts
+      blockinfile:
+       path: /etc/hosts
+       block: |
+         "{{web01_ip}}" web01
+         "{{app01_ip}}" app01
+         "{{db01_ip}}" db01
+         "{{mc01_ip}}" mc01
+         "{{rmq_ip}}" rmq01
+      
+         

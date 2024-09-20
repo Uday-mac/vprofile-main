@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: installing the packages
+      apt:
+       name: "{{item}}"
+       state: present
+       update_cache: yes
+      loop: 
+        - openjdk-11-jdk
+        - maven
+        - git
+
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: 'https://github.com/Uday-mac/vprofile-main.git'
+        dest: ./vprofile-repo
+        version: ansible-aws
+      register: git_out
+
+    - name: mvn install command to build artifact
+      ansible.builtin.command: "mvn clean install"
+      args: 
+         chdir: /vprofile-repo
+      when: git_out.changed
+      register: mvn_out
+
+    - name: copy the artifact
+      copy:
+       src: "{{item}}"
+       dest: file/ROOT.war
+      with_fileglob: vprofile-repo/traget/*.war
+
+    - name: copying the sql file from repo
+      copy:
+       src: vprofile-repo/src/main/resources/db_backup.sql
+       dest: files/db_backup.sql

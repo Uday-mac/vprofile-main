@@ -1,0 +1,33 @@
+---
+- name: memcached installtion
+  hosts: mcservers
+  become: true
+
+  tasks:
+    - name: installimg memcached
+      apt:
+        name: memcached
+        state: present
+        update_cache: yes
+
+    - name: starting the memcache service
+      service:
+        name: memcached
+        state: started
+        enbaled: yes
+
+    - name: enable remote login
+      lineinfile:
+        path: /etc/memcached.conf
+        regexp: '^-l'
+        line: '-l 0.0.0.0'
+        backup: yes
+      notify:
+          - restart-memcached
+      tags:
+         - conf
+  handlers:
+    - name: restart-memcached
+      service:
+        name: memcached
+        state: restarted

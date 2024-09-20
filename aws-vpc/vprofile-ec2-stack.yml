@@ -173,7 +173,7 @@
 
     - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
       ansible.builtin.blockinfile:
-        path: provision-stack/hostsip
+        path: provision-stack/group_vars/hostsip
         block: |
           web01_ip: "{{web01_out.instances[0].private_ip_address}}"
           app01_ip: "{{app01_out.instances[0].private_ip_address}}"
@@ -222,6 +222,6 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file=loginkey_vpro.pem
+          ansible_ssh_private_key_file=login-key.pem
     
         

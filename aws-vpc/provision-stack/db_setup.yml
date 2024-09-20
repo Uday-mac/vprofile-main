@@ -1,0 +1,61 @@
+---
+- name: dbserver setup
+  hosts: dbservers
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: importing the db variables
+      include_vars: group_vars/dbsrvgrp
+
+
+    - name: installing the mariadb servers
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      loop:
+        - mysql-server
+        - pmysql-client
+        - python-mysqldb
+        - python3-mysqldb
+        - libmysqlclient-db
+      ignore_errors: yes
+      tags:
+        - package
+
+    - name: starting the mariadb service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create database user
+      mysql_user:
+        name: "{{dbuser}}"
+        password: "{{dbpasswd}}"
+        priv: '*.*:ALL'
+        host: '*'
+        state: present
+
+    - name: Create a new database
+      mysql_db:
+        name: "{{dbname}}"
+        state: present
+
+    - name: enable remote login
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: '0.0.0.0/0'
+        backup: yes
+        notify:
+          - restart-mysql
+        tags:
+         - conf
+
+  handlers:
+    - name: restart-mysql
+      service:
+        name: mysql
+        state: restarted

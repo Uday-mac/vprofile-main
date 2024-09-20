@@ -1,0 +1,41 @@
+---
+- name: nginx installation
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: installing nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+    
+    - name: starting the nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: remove the default website
+      file:
+        src: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: deploy webconfig file
+      template: 
+        src: templates/nginx.j2
+        dest: /etc/nginx/sites-available/vproapp
+
+    - name: linking
+      file:
+        src: /etc/nginx/sites-available/vproapp
+        dest: /etc/nginx/sites-enabled/vproapp
+        state: link
+      notify: 
+        - restart_nginx
+
+  handlers:
+    - name: restart_nginx
+      service: nginx
+      state: restarted

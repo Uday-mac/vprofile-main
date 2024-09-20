@@ -31,5 +31,5 @@ rmqservers
 
 [stack_inst:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=loginkey_vpro.pem
+ansible_ssh_private_key_file=login-key.pem
 # END ANSIBLE MANAGED BLOCK

@@ -1,0 +1,26 @@
+---
+- name: deploying the sql dump
+  hosts: dbservers
+  become: true
+
+  tasks:
+    - name: copying the sql file from files to tmp
+      copy:
+        src: files/db_backup.sql
+        dest: /tmp/db_backup.sql
+
+    - name: Restore database
+      mysql_db:
+        name: "{{dbname}}"
+        login_user: "{{dbuser}}"
+        login_password: "{{dbpasswd}}"
+        state: import
+        target: /tmp/db_backup.sql
+      notify:
+        - restart-mysql
+
+  handlers:
+    - name: restart-mysql
+      service:
+        name: mysql
+        state: restarted
