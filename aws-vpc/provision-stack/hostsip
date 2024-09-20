@@ -1,1 +1,8 @@
 hosts-ip
+# BEGIN ANSIBLE MANAGED BLOCK
+web01_ip: "172.20.4.142"
+app01_ip: "172.20.4.129"
+db01_ip:  "172.20.4.235"
+mc01_ip:  "172.20.4.139"
+rmq01_ip: "172.20.4.36"
+# END ANSIBLE MANAGED BLOCK
