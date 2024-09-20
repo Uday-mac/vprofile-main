@@ -150,21 +150,21 @@
       register: rmq01_out
 
     - local_action:
-      module: ec2_elb_lb
-      name: "vprofile-elb"
-      state: present
-      instance_ids:
-        - "{{web01_out.instances.instance_id}}"
-      security_group_ids: "{{elb_out.group_id}}"
-      purge_instance_ids: true
-      subnets:
-        - "{{pubsub1_id}}"
-        - "{{pubsub2_id}}"
-        - "{{pubsub3_id}}"
-      listeners:
-        - protocol: http # options are http, https, ssl, tcp
-          load_balancer_port: 80
-          instance_port: 80
+        module: ec2_elb_lb
+        name: "vprofile-elb"
+        state: present
+        instance_ids:
+          - "{{web01_out.instances.instance_id}}"
+        security_group_ids: "{{elb_out.group_id}}"
+        purge_instance_ids: true
+        subnets:
+          - "{{pubsub1_id}}"
+          - "{{pubsub2_id}}"
+          - "{{pubsub3_id}}"
+        listeners:
+          - protocol: http # options are http, https, ssl, tcp
+            load_balancer_port: 80
+            instance_port: 80
 
     - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
       ansible.builtin.blockinfile:
