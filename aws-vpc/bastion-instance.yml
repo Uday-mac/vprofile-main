@@ -38,8 +38,8 @@
             rule_desc: allow ssh on port 22 from myip
       register: sgout
 
-    - name: creating bastion instace
-      ec2:
+    - name: creating bastion instance
+      ec2_instance:
         key_name: bastion-key
         instance_type: t2.micro
         image: "{{bastion_ami}}"
@@ -57,7 +57,7 @@
         vpc_subnet_id: "{{vpc_id}}"
         group_id: "{{sgout.group_id}}"
       register: batsion_out
-      
+
 
     
     
