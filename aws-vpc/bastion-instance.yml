@@ -30,11 +30,10 @@
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
         rules:
-          - proto: tcp
-            ports:
-              - 22
-            cidr_ip: "{{myip}}"
-            rule_desc: allow ssh on port 22 from myip
+          proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: "{{myip}}"
       register: sgout
 
     - name: start an instance with a public IP address
