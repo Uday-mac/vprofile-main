@@ -50,7 +50,7 @@
         security_group: "{{sgout.group_id}}"
         tags:
           Name: bastion-instance
-      registe: bastion_out
+      register: bastion_out
 
     - name: Insert/Update bastionsgid in vars/output_vars
       ansible.builtin.blockinfile:
