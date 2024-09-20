@@ -149,6 +149,10 @@
           Name: rmq01
       register: rmq01_out
 
+    - name: printing the output
+      debug:
+        var: rmq01_out
+
     - local_action:
         module: ec2_elb_lb
         name: "vprofile-elb"
