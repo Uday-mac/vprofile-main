@@ -32,6 +32,7 @@
         description: vprofile-elb-sg
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
+        purge_rules: no
         rules:
           - proto: tcp
             from_port: 80
@@ -45,6 +46,7 @@
         description: vprofile-stack-sg
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
+        purge_rules: no
         rules:
           - proto: tcp
             from_port: 80
@@ -59,12 +61,92 @@
 
     - name: security-group for elb
       amazon.aws.ec2_security_group:
-        name: vprofile-elb-sg
-        description: vprofile-elb-sg
+        name: vprofile-stack-sg
+        description: vprofile-stack-sg
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
         rules:
           - proto: all
             group_id: "{{vpro_sg_out.group_id}}"
+
+    - name: creating nginx instance
+      amazon.aws.ec2_instance:
+        name: "nginx-instance"
+        key_name: "login-key"
+        instance_type: t2.micro
+        image_id: "{{nginx_ami}}"
+        region: "{{region}}"
+        exact_count: 1
+        wait: yes
+        wait_timeout: 300
+        vpc_subnet_id: "{{pirsub1_id}}"
+        security_group: "{{vpro_sg_out.group_id}}"
+        tags:
+          Name: web01
+      register: web01_out
+
+    - name: creating tomcat instance
+      amazon.aws.ec2_instance:
+        name: "tomcat-instance"
+        key_name: "login-key"
+        instance_type: t2.micro
+        image_id: "{{tomcat_ami}}"
+        region: "{{region}}"
+        exact_count: 1
+        wait: yes
+        wait_timeout: 300
+        vpc_subnet_id: "{{pirsub1_id}}"
+        security_group: "{{vpro_sg_out.group_id}}"
+        tags:
+          Name: app01
+      register: app01_out
+
+    - name: creating mysql instance
+      amazon.aws.ec2_instance:
+        name: "mysql-instance"
+        key_name: "login-key"
+        instance_type: t2.micro
+        image_id: "{{mysql_ami}}"
+        region: "{{region}}"
+        exact_count: 1
+        wait: yes
+        wait_timeout: 300
+        vpc_subnet_id: "{{pirsub1_id}}"
+        security_group: "{{vpro_sg_out.group_id}}"
+        tags:
+          Name: db01
+      register: db0101_out
+
+    - name: creating memcached instance
+      amazon.aws.ec2_instance:
+        name: "memccache-instance"
+        key_name: "login-key"
+        instance_type: t2.micro
+        image_id: "{{memcached_ami}}"
+        region: "{{region}}"
+        exact_count: 1
+        wait: yes
+        wait_timeout: 300
+        vpc_subnet_id: "{{pirsub1_id}}"
+        security_group: "{{vpro_sg_out.group_id}}"
+        tags:
+          Name: mc01
+      register: mc01_out
+
+    - name: creating rabbitmq instance
+      amazon.aws.ec2_instance:
+        name: "rabbitmq-instance"
+        key_name: "login-key"
+        instance_type: t2.micro
+        image_id: "{{rmq_ami}}"
+        region: "{{region}}"
+        exact_count: 1
+        wait: yes
+        wait_timeout: 300
+        vpc_subnet_id: "{{pirsub1_id}}"
+        security_group: "{{vpro_sg_out.group_id}}"
+        tags:
+          Name: rmq01
+      register: rmq01_out
     
         
