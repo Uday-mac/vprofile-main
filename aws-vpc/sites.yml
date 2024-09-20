@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+   - name: importing the playbooks
+     import_playbook: vpc-setup.yml
+     import_playbook: bastion-instance.yml

@@ -5,7 +5,7 @@
 
   tasks:
     - name: import bastion variables
-      include_vars: bastion_setup
+      include_vars: vpc_setup
 
     - name: importing vpc ids
       include_vars: vars/output_vars

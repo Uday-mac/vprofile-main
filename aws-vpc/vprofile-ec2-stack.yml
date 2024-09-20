@@ -1,0 +1,30 @@
+---
+- name: setting up the ec2 stack
+  hosts: localhost
+  connection: local 
+  gather_facts: false
+
+  tasks:
+    - name: importing the vpc and bastion variables
+      include_vars: vpc_setup
+
+    - name: importing the vpc id's
+      include_vars: vars/output_vars
+
+    - name: importing vprostack setup variables
+      ignore_vars: vars/vprostacksetup
+
+    - name: creating login-key
+      amazon.aws.ec2_key:
+        name: login-key
+        region: "{{region}}"
+      register: loginkeyout
+
+    - name: saving the login-key
+      copy:
+       content: "{{loginkeyout.key.private_key}}"
+       dest: ./login-key.pem
+      when: loginkeyout.change == true
+
+    
+        
