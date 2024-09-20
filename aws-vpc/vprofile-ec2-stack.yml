@@ -148,5 +148,75 @@
         tags:
           Name: rmq01
       register: rmq01_out
+
+    - local_action:
+      module: ec2_elb_lb
+      name: "vprofile-elb"
+      state: present
+      instance_ids:
+        - "{{web01_out.instances.instance_id}}"
+      security_group_ids: "{{elb_out.group_id}}"
+      purge_instance_ids: true
+      subnets:
+        - "{{pubsub1_id}}"
+        - "{{pubsub2_id}}"
+        - "{{pubsub3_id}}"
+      listeners:
+        - protocol: http # options are http, https, ssl, tcp
+          load_balancer_port: 80
+          instance_port: 80
+
+    - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
+      ansible.builtin.blockinfile:
+        path: vars/output_vars
+        block: |
+          web01_ip: "{{web01_out.instances.network_interfaces.private_ip_address}}"
+          app01_ip: "{{app01_out.instances.network_interfaces.private_ip_address}}"
+          db01_ip:  "{{db01_out.instances.network_interfaces.private_ip_address}}"
+          mc01_ip:  "{{mc01_out.instances.network_interfaces.private_ip_address}}"
+          rmq01_ip: "{{rmq01_out.instances.network_interfaces.private_ip_address}}"
+
+    - name: saving the login-key
+      copy:
+       content: "{{loginkeyout.key.private_key}}"
+       dest: provision-stack/loginkey_vpro.pem
+       mode: 0400
+
+    - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
+      ansible.builtin.blockinfile:
+        path: vars/output_vars
+        block: |
+          web01 ansible_host= "{{web01_out.instances.network_interfaces.private_ip_address}}"
+          app01 ansible_host"{{app01_out.instances.network_interfaces.private_ip_address}}"
+          db01 ansible_host= "{{db01_out.instances.network_interfaces.private_ip_address}}"
+          mc01 ansible_host="{{mc01_out.instances.network_interfaces.private_ip_address}}"
+          rmq01 ansible_host="{{rmq01_out.instances.network_interfaces.private_ip_address}}"
+          cntrl ansible_host=127.0.0.1 ansible_connection=local
+
+          [webservers]
+          web01
+
+          [appservers]
+          app01
+
+          [dbservers]
+          db01
+
+          [mcservers]
+          mc01
+
+          [rmqservers]
+          rmq01
+
+          [stack_inst:children]
+          webservers
+          appservers
+          dbservers
+          mcservers
+          rmqservers
+
+          [stack_inst:vars]
+          ansible_user=ubuntu
+          ansible_ssh_private_key_file=loginkey_vpro.pem
     
         
