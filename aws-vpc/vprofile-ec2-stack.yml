@@ -32,7 +32,7 @@
         description: vprofile-elb-sg
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
-        purge_rules: no
+        purge_rules: false
         rules:
           - proto: tcp
             from_port: 80
@@ -46,7 +46,7 @@
         description: vprofile-stack-sg
         vpc_id: "{{vpc_id}}"
         region: "{{region}}"
-        purge_rules: no
+        purge_rules: false
         rules:
           - proto: tcp
             from_port: 80
