@@ -173,7 +173,7 @@
 
     - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
       ansible.builtin.blockinfile:
-        path: vars/output_vars
+        path: provision-stack/hostsip
         block: |
           web01_ip: "{{web01_out.instances[0].private_ip_address}}"
           app01_ip: "{{app01_out.instances[0].private_ip_address}}"
@@ -184,12 +184,12 @@
     - name: saving the login-key
       copy:
        src: login-key.pem
-       dest: provision-stack/loginkey_vpro.pem
+       dest: provision-stack/login-key.pem
        mode: 0400
 
     - name: Insert/Update private ip's in provision-stack/group_vars/hostsip
       ansible.builtin.blockinfile:
-        path: vars/output_vars
+        path: provision-stack/inventory
         block: |
           web01 ansible_host= "{{web01_out.instances.network_interfaces.private_ip_address}}"
           app01 ansible_host"{{app01_out.instances.network_interfaces.private_ip_address}}"
