@@ -1,0 +1,78 @@
+---
+- name: deploying vprofile app on app-server
+  hosts: appsvrgrp
+  become: true
+  vars:
+    timestamp: "{{ansible_date_time.date}}_{{ansible_date_time.hour}}_{{ansible_date_time.minute}}"
+  
+  tasks:
+    - name: downloading the artifact from nexus repo
+      get_url:
+        url: "http://{{user}}:{{passwd}}@{{nexusip}}/repository/{{reponame}}/{{groupname}}/{{artifactid}}/{{buildid}}-{{time}}/{{vprofile_version}}"        
+        dest: "/tmp/vproapp-{{vprofile_version}}"
+      register: war_deploy
+      tags:
+       - deploying
+
+    - name: checking the if ROOT already exists
+      stat:
+        path: /usr/local/tomcat10/webapps/ROOT
+      register: artifact_stat
+    
+    - name: stop the tomcat service
+      service:
+        name: tomcat
+        state: stopped
+
+    - name: try backup and deploying
+      block:
+        - name: Archive ROOT dir with timestamp
+          archive:
+            path: /usr/local/tomcat10/webapps/ROOT
+            dest: "/opt/ROOT_{{timestamp}}.tgz"
+          when: artifact_stat.stat.exists
+          register: archive_info
+        
+        - name: tacking backup for ROOT
+          shell: cp -r ROOT old_ROOT
+          args:
+            chdir: /usr/local/tomcat10/webapps/
+
+        - name: delete the current artifact
+          file:
+            path: "{{item}}"
+            state: absent
+          when: archive_info.changed
+          loop:
+            - /usr/local/tomcat10/webapps/ROOT
+            - /usr/local/tomcat10/webapps/ROOT.war
+          
+        - name: deploy artifact if fails restore the old artifact
+          block:
+            - name: copying the artifact
+              copy:
+                src: "/tmp/vproapp-{{vprofile_version}}"
+                dest: /usr/local/tomcat10/webapps/ROOT.war
+                remote_src: yes
+              register: deploy_info
+
+          rescue:
+            - name: copying the old artifact
+              shell: cp -r old_ROOT ROOT
+              args: 
+                chdir: /usr/local/tomcat10/webapps/
+      rescue:
+        - name: start the tomcat rescue
+          service:
+            name: tomcat
+            state: started
+
+    - name: start the tomcat
+      service:
+        name: tomcat
+        state: started
+      when: deploy_info.changed
+
+    - name: wait for ROOT.war is available
+      wait_for: 
+        path: /usr/local/tomcat10/webapps/ROOT.war

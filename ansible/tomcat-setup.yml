@@ -1,0 +1,72 @@
+---
+- name: installing the tomcat on ubuntu
+  hosts: appsvrgrp
+  become: true
+  vars:
+    url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.30/bin/apache-tomcat-10.1.30.tar.gz
+
+  tasks:
+    - name: installing the dependencies
+      apt:
+        name: openjdk-17-jdk
+        state: present
+        update_cache: yes
+
+    - name: downloading the tomcat
+      get_url:
+        url: "{{url}}"
+        dest: /tmp/apache-tomcat-10.1.30.tar.gz
+
+    - name: Ensure "tomcat" group exists
+      ansible.builtin.group:
+        name: tomcat
+        state: present
+
+    - name: creating user and group for tomcat
+      ansible.builtin.user:
+        name: tomcat
+        group: tomcat
+        shell: /bin/nologin
+        home: /usr/local/tomcat10
+
+    - name: creating the tmp directory for unarchive
+      file:
+        path : /tmp/tomcat10
+        state: directory
+
+    - name: unarchive the tomcat10
+      unarchive:
+        src: /tmp/apache-tomcat-10.1.30.tar.gz
+        dest: /tmp/tomcat10/
+        remote_src: yes
+        list_files: yes
+      register: unarchive_info
+
+    - name: synchronize
+      synchronize:
+        src: /tmp/tomcat10/apache-tomcat-10.1.30/
+        dest: /usr/local/tomcat10/
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: change the ownership of tomcat
+      file:
+        path: /usr/local/tomcat10
+        owner: tomcat
+        group: tomcat
+        recurse: yes
+
+    - name: copying the systemd file for the tomcat
+      template:
+        src: templates/tomcat-10-svc.j2
+        dest: /etc/systemd/system/tomcat.service
+        mode: "a+x"
+
+    - name: reload the daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: start and enabled the tomcat service
+      service:
+        name: tomcat
+        state: started
+        enabled: yes

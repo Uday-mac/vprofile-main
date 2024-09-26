@@ -1,0 +1,25 @@
+- Get the url of the tomcat
+
+- create variable with name url for tomcat using vars
+
+- install tomcat dependency java using apt module
+
+- download the tomcat using get_url module
+
+- create the user group with the name tomcat using the group module
+
+- create user and add user to the group using create home directory for the user using the user module
+
+- create temporary directory for extracting the tomcat using file module
+
+- extract the tomcat to the created temporary directory using the unarchive module
+
+- synchronize the unarchive tomcat on the remote server using the synchronize module
+
+- change the ownership of the synchronized file to created user using the file module
+
+- copy the systemd template from templates directory to /etc/systemd/system/tomcat8.service
+
+- reload the daemon using the systemd module
+
+- start and enabled the tomcat service
