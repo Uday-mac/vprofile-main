@@ -7,7 +7,7 @@ services:
     image: udaymac/vprofiledb
     container_name: vprodb
     ports:
-      - 3306:3306
+      - 33060:33060
     volumes:
       - vprodbdata:/var/lib/mysql
     environment:
