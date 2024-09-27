@@ -1,7 +1,7 @@
 FROM openjdk:11 as build_image
 RUN apt update && apt install maven -y
 RUN git clone https://github.com/Uday-mac/vprofile-main.git
-RUN cd vprofile-main && git checkout main && mvn install
+RUN cd vprofile-main && mvn install
 
 From tomcat:9-jre11
 RUN rm -rf /usr/local/tomcat/webapps/*
