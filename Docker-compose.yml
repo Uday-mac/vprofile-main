@@ -11,7 +11,7 @@ services:
     volumes:
       - vprodbdata:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_ROOT_PASSWORD=admin123
       - MYSQL_DATABASE=accounts
       - MYSQL_USER=admin
 
@@ -26,7 +26,7 @@ services:
       - RABBITMQ_DEFAULT_USER=test
       - RABBITMQ_DEFAULT_PASS=test
     expose:
-      - 5672:5672
+      - 15672:15672
 
   vproapp:
     build:
