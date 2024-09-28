@@ -14,6 +14,11 @@ services:
       - MYSQL_ROOT_PASSWORD=admin123
       - MYSQL_DATABASE=accounts
       - MYSQL_USER=admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   vpromem:
     image: memcached
@@ -39,7 +44,8 @@ services:
     volumes:
       - vproappdata:/usr/local/tomcat/webapps
     depends_on:
-      - vprodb
+      vprodb:
+        condition: service_healthy
 
   vproweb:
     build:
