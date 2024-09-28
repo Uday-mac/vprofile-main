@@ -13,7 +13,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
       - MYSQL_DATABASE=accounts
-      - MYSQL_USER=admin
+      - MYSQL_USER=root
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
