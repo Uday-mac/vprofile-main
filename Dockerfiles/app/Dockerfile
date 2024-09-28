@@ -1,4 +1,6 @@
 FROM openjdk:11 as build_image
+LABEL "Author"="uday"
+LABEL "project"="vprofile"
 RUN apt update && apt install maven -y
 RUN git clone -b docker https://github.com/Uday-mac/vprofile-main.git
 RUN cd vprofile-main && mvn install
