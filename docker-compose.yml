@@ -13,19 +13,13 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
       - MYSQL_DATABASE=accounts
-      - MYSQL_USER=root
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
-  vpromem:
+  mem:
     image: memcached
     expose:
       - 11211:11211
 
-  vprormq:
+  rmq:
     image: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=test
@@ -44,8 +38,7 @@ services:
     volumes:
       - vproappdata:/usr/local/tomcat/webapps
     depends_on:
-      vprodb:
-        condition: service_healthy
+      - vprodb
 
   vproweb:
     build:
