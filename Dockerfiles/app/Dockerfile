@@ -1,4 +1,4 @@
-FROM openjdk:11 as build_image
+FROM openjdk:11 AS build_image
 RUN apt update && apt install maven -y
 RUN git clone -b docker https://github.com/Uday-mac/vprofile-main.git
 RUN cd vprofile-main && mvn install
