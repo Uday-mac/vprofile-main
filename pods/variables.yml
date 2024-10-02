@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test-config
+  namespace: default
+data:
+  MYSQL_ROOT_PASSWORD: default
+  MYSQL_DATABASE: accounts
