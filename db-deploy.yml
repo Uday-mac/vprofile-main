@@ -13,11 +13,7 @@ spec:
     spec:
       containers:
         - name: vprodb
-          image: udaymac/vprodb:latest
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          image: udaymac/vprofiledb:latest
           ports:
           - containerPort: 3306
             name: vprodb-port
@@ -36,15 +32,17 @@ spec:
       volumes:
         - name: vprodb-data
           awsElasticBlockStore:
+            volumeID:  vol-0ef2455ac12fb6833
+            fstype: ext4
           
 
-      initContainer:
+      initContainers:
         - name: busybox
           image: busybox:latest
           args: ["rm","-rf","/var/lib/mysql/lost+found"]
           volumeMounts:
-            -name: vprodb-data
-             mountPath: /var/lib/mysql 
+            - name: vprodb-data
+              mountPath: /var/lib/mysql 
           
 
       
