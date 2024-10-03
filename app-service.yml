@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vproapp-service
+  namespace: default
+spec:
+  selector:
+    app: vproapp 
+  type: LoadBalancer
+  ports:
+  - name: vproapp 
+    port: 80
+    protocol: TCP
+    targetPort: vproapp-port
+   
