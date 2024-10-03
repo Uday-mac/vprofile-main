@@ -33,7 +33,7 @@ spec:
         - name: vprodb-data
           awsElasticBlockStore:
             volumeID:  vol-0ef2455ac12fb6833
-            fstype: ext4
+            fsType: ext4
           
 
       initContainers:
