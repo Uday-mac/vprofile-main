@@ -28,4 +28,4 @@ spec:
         
         - name: init-mc
           image: busybox
-          command: ['sh','-c',"until nslookup vpromc-service; do echo waiting for memcached; sleep 2; done;"]
+          command: ['sh', '-c', "until nslookup vpromc-service; do echo waiting for memcached; sleep 2; done;"]
