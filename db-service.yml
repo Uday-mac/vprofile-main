@@ -8,6 +8,6 @@ spec:
     app: vprodb 
   type: ClusterIP
   ports:
-    protocol: TCP
+  - protocol: TCP
     port: 3306
     targetPort: vprodb-port

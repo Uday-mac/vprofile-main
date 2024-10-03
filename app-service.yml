@@ -8,7 +8,7 @@ spec:
     app: vproapp 
   type: LoadBalancer
   ports:
-    port: 80
+  - port: 80
     protocol: TCP
     targetPort: vproapp-port
    
