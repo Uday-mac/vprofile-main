@@ -21,7 +21,7 @@ spec:
           ports:
           - containerPort: 8080
             name: vproapp-port
-      initContainer:
+      initContainers:
         - name: init-db
           image: busybox
           command: ['sh', '-c', "until nslookup vprodb-service; do echo waiting for mydb; sleep 2; done;"]
