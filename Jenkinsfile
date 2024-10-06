@@ -23,8 +23,10 @@ pipeline {
             }
             post {
                 success {
-                    echo "Now archieving.."
-                    acrchiveArtifacts artifacts:'**target/*.war'
+                    steps {
+                        echo "Now archieving.."
+                        archiveArtifacts artifacts:'**target/*.war'
+                    }
                 }
             }
         }
