@@ -3,9 +3,9 @@ sudo apt-get update
 
 sudo apt-get install wget openjdk-11-jdk -y
 
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 
-sudo install -m 0755 -d /etc/apt/keyring -y
+sudo install -m 0755 -d /etc/apt/keyring
 
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 
@@ -26,6 +26,8 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
 
 sudo apt-get update
 
-sudo apt-get install jenkins
+sudo apt-get install jenkins -y
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+sudo usermod -aG docker jenkins
