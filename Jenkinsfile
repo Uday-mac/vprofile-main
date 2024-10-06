@@ -17,6 +17,18 @@ pipeline {
             }
         }
 
+        stage('build code') {
+            steps {
+                sh 'mvn install -DskipTests'
+            }
+            post {
+                success {
+                    echo "Now archieving.."
+                    acrchiveArtifacts artifacts:'**target/*.war'
+                }
+            }
+        }
+
         stage('unit test') {
             steps{
                 sh 'mvn test'
