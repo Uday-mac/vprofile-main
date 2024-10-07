@@ -15,7 +15,7 @@ spec:
         - name: vprodb
           image: udaymac/vprofiledb:latest
           ports:
-          - containerPort: 33060
+          - containerPort: 3306
             name: vprodb-port
           env:
           - name: MYSQL_ROOT_PASSWORD

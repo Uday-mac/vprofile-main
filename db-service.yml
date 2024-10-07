@@ -8,5 +8,5 @@ spec:
   type: ClusterIP
   ports:
   - protocol: TCP
-    port: 33060
+    port: 3306
     targetPort: vprodb-port
