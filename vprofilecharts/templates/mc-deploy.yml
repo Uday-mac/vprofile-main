@@ -9,10 +9,10 @@ spec:
     matchLabels:
       app:vpromc
   replicas: 1
-   spec:
-      containers:
-        - name: vpromc
-          image:  memcached:latest
-          ports:
+  spec:
+    containers:
+      - name: vpromc
+        image:  memcached:latest
+        ports:
           - containerPort:  11211
             name: vpromc-port
