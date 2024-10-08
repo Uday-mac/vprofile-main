@@ -23,4 +23,4 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: db-pass
-                name: app-secrets 
+                name: app-secrets

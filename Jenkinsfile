@@ -71,7 +71,7 @@ pipeline {
         stage('build-docker-image') {
             steps {
                 script {
-                  dockerImage = docker.build (registry + ":V${{env.BUILD_NUMBER}}", ".")
+                  dockerImage = docker.build (registry + ":V${env.BUILD_NUMBER}", ".")
                 }
             }
         }
@@ -84,6 +84,12 @@ pipeline {
                         dockerImage.push('latest')
                     }
                 }
+            }
+        }
+
+        steps('remove unused docker image') {
+            steps {
+                sh 'docker rmi $registry:V$BUILD_NUMBER'
             }
         }
     }
