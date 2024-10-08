@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: vprormq
   replicas: 1
-    spec:
+  spec:
       containers:
       - name:  vprormq
         image:  rabbitmq:latest
