@@ -20,8 +20,8 @@ spec:
       initContainers:
         - name: init-db
           image: busybox
-          command: ['sh', '-c', "until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for vprodb; do echo waiting for mydb-service; sleep 2; done"]
+          command: ['sh', '-c', 'until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for vprodb; sleep 2; done']
         
         - name: init-mc
           image: busybox
-          command: ['sh', '-c', "until nslookup vpromc.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for vpromc; sleep 2; done"]
+          command: ['sh', '-c', 'until nslookup vpromc-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for vpromc; sleep 2; done']
