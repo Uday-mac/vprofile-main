@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('',docker_cred) {
-                        dockerImage.push("V${BUILD_NUMBER}-latest")
+                        dockerImage.push("V${BUILD_NUMBER}")
                         dockerImage.push('latest')
                     }
                 }
