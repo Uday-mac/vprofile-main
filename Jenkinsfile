@@ -96,7 +96,7 @@ pipeline {
         stage('deploying on kubernetest') {
             agent {label 'KOPS'}
             steps {
-                sh 'helm install ./vprofilecharts --set appimage=${registry}:${BUILD_NUMBER} --namespace prod'
+                sh 'helm upgrade --install --force vprofile vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod'
             }
         }
     }
