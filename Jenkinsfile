@@ -11,12 +11,6 @@ pipeline {
         registry = 'udaymac/vproappdock'
     }
     stages {
-        stage('cloing the code') {
-            steps{
-                git branch:'kube-cicd', url:'https://github.com/Uday-mac/vprofile-main.git'
-            }
-        }
-
         stage('build code') {
             steps {
                 sh 'mvn install -DskipTests'
@@ -96,7 +90,7 @@ pipeline {
         stage('deploying on kubernetest') {
             agent {label 'KOPS'}
             steps {
-                sh 'helm upgrade --install --force vprofile vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod'
+                sh 'helm upgrade --install --force vprofile helm/vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod'
             }
         }
     }
