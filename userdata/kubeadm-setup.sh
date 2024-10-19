@@ -57,6 +57,10 @@ EOF
   sudo systemctl enable --now kubelet
 
 else
+  sudo swapoff -a
+
+  sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
   sudo apt-get update
 
   sudo apt-get install -y apt-transport-https ca-certificates curl gpg
@@ -70,5 +74,9 @@ else
   sudo apt-get install -y kubelet=1.30.0-1.1 kubeadm=1.30.0-1.1 kubectl=1.30.0-1.1
 
   sudo systemctl enable --now kubelet
+
+  sleep 360
+
+  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 fi
